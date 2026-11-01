@@ -1,41 +1,46 @@
 package com.webview.sandbox
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
 
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        webView = findViewById(R.id.webView)
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.webViewClient = WebViewClient()
+        // WebView dibuat programatik (tanpa layout XML)
+        webView = WebView(this).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            webViewClient = WebViewClient()
+        }
+
+        setContentView(webView)
         webView.loadUrl("file:///android_asset/www/index.html")
 
-        // Handler back button: navigasi history WebView dulu, baru keluar activity.
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (webView.canGoBack()) {
-                    webView.goBack()
-                } else {
-                    finish()
-                }
+        // Menggunakan lambda extension dari activity-ktx
+        onBackPressedDispatcher.addCallback(this) {
+            if (webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
             }
-        })
+        }
     }
 
     override fun onDestroy() {
-        // Cegah memory leak WebView.
+        // Bersihkan WebView agar tidak memory leak
         webView.destroy()
         super.onDestroy()
     }
