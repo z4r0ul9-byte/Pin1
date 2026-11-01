@@ -18,7 +18,13 @@ class WebAppBridge(private val context: Context, private val activity: Activity)
 
     @JavascriptInterface
     fun getAppVersion(): String {
-        return BuildConfig.VERSION_NAME
+        // Mengambil versi langsung dari PackageManager (tanpa butuh BuildConfig)
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            packageInfo.versionName ?: "1.0"
+        } catch (e: Exception) {
+            "1.0"
+        }
     }
 
     @JavascriptInterface
