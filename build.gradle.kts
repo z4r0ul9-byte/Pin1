@@ -32,7 +32,7 @@ android {
 
     buildFeatures {
         viewBinding = true
-        buildConfig = true // Tambahan wajib untuk AGP 8.0+
+        buildConfig = true
     }
 }
 
