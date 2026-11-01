@@ -1,28 +1,35 @@
-package com.html2apk.template
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
 
-class SplashActivity : AppCompatActivity() {
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/app_name" />
 
-    private val handler = Handler(Looper.getMainLooper())
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Memuat..."
+            android:textSize="16sp" />
 
-    private val navigateToMain = Runnable {
-        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        finish()
-    }
+        <ProgressBar
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            style="?android:attr/progressBarStyle" />
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-        handler.postDelayed(navigateToMain, 1200L)
-    }
+    </LinearLayout>
 
-    override fun onDestroy() {
-        handler.removeCallbacks(navigateToMain)
-        super.onDestroy()
-    }
-}
+</FrameLayout>
