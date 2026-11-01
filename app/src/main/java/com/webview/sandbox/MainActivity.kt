@@ -1,6 +1,7 @@
 package com.webview.sandbox
 
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -25,10 +26,17 @@ class MainActivity : AppCompatActivity() {
             webViewClient = WebViewClient()
         }
 
+        // Registrasi JS Bridge dengan try-catch untuk keamanan
+        try {
+            webView.addJavascriptInterface(WebAppBridge(this, this), "Android")
+        } catch (e: SecurityException) {
+            Log.e("MainActivity", "Gagal menambahkan JavascriptInterface: ${e.message}")
+        }
+
         setContentView(webView)
         webView.loadUrl("file:///android_asset/www/index.html")
 
-        // Menggunakan lambda extension dari activity-ktx
+        // Back handler: navigasi WebView dulu, kalau sudah tidak bisa goBack baru finish.
         onBackPressedDispatcher.addCallback(this) {
             if (webView.canGoBack()) {
                 webView.goBack()
