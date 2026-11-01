@@ -1,3 +1,104 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Sandbox</title></head>
-<body><h1>HTML Loaded</h1><p>Jika kamu lihat ini, pipeline berhasil.</p></body></html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView Bridge Sandbox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            font-size: 20px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button:active {
+            background-color: #0056b3;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:active {
+            background-color: #a71d2a;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 12px;
+            background: #e9ecef;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            min-height: 40px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>JS Bridge Test</h1>
+    
+    <div class="button-group">
+        <button onclick="testToast()">Tes Toast</button>
+        <button onclick="testVersion()">Tes Versi</button>
+        <button onclick="testDevice()">Tes Device</button>
+        <button class="danger" onclick="exitApp()">Keluar App</button>
+    </div>
+
+    <p id="output">Menunggu perintah...</p>
+
+    <script>
+        function checkBridge() {
+            if (typeof Android === 'undefined') {
+                document.getElementById('output').innerText = "Error: Objek 'Android' tidak ditemukan.";
+                return false;
+            }
+            return true;
+        }
+
+        function testToast() {
+            if (checkBridge()) {
+                Android.showToast("Halo dari HTML!");
+                document.getElementById('output').innerText = "Toast dipanggil.";
+            }
+        }
+
+        function testVersion() {
+            if (checkBridge()) {
+                const version = Android.getAppVersion();
+                document.getElementById('output').innerText = "App Version: " + version;
+            }
+        }
+
+        function testDevice() {
+            if (checkBridge()) {
+                const device = Android.getDeviceInfo();
+                document.getElementById('output').innerText = "Device Info: " + device;
+            }
+        }
+
+        function exitApp() {
+            if (checkBridge()) {
+                Android.exitApp();
+            }
+        }
+    </script>
+</body>
+</html>
