@@ -19,13 +19,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Delay singkat 1200ms lalu pindah ke MainActivity.
-        // Pakai Handler untuk menghindari dependency lifecycle-runtime-ktx.
+        // Delay 1200ms menggunakan Handler murni (tanpa dependency tambahan)
         handler.postDelayed(navigateToMain, 1200L)
     }
 
     override fun onDestroy() {
-        // Hindari callback menembak setelah activity dihancurkan.
+        // Hindari callback berjalan setelah activity dihancurkan
         handler.removeCallbacks(navigateToMain)
         super.onDestroy()
     }
