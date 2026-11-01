@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.webview.sandbox"
+    namespace = "com.html2apk.template"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.webview.sandbox"
+        applicationId = "com.html2apk.template"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
     }
 
     buildTypes {
@@ -32,6 +32,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
